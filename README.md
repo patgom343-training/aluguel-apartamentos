@@ -1,59 +1,121 @@
-🧩 User Story 1 — Registro de Proprietário
 
-Como um proprietário,
-Eu quero ser capaz de me registrar,
-Para que eu possa acessar o sistema e gerenciar os apartamentos que desejo alugar por temporada.
+# API de Gestão de Apartamentos por Temporada
 
-Regras de Negócio:
+API RESTful para cadastro, autenticação de proprietários e gestão de imóveis para aluguel por temporada.
 
-O e-mail do proprietário deve ser único (não pode haver duplicidade).
+## Funcionalidades
+- Registro e autenticação de proprietários (JWT)
+- Cadastro de imóveis por proprietários autenticados
+- Listagem de imóveis disponíveis com filtros
+- Documentação Swagger acessível via endpoint
 
-Todos os campos obrigatórios (nome, e-mail, senha, telefone) devem ser preenchidos.
+## Arquitetura
+- **Express** para rotas e servidor
+- **JWT** para autenticação
+- **Swagger** para documentação
+- **Banco em memória** (dados não persistem após reiniciar)
+- Camadas: `routes`, `controllers`, `services`, `models`, `middleware`
 
-A senha deve atender a critérios mínimos de segurança (mínimo de 8 caracteres).
+## Autenticação
+Utilize o endpoint `/api/owners/login` para obter um token JWT. Envie o token no header `Authorization: Bearer <token>` para acessar rotas protegidas.
+
+## Endpoints Principais
+
+### Registro de Proprietário
+`POST /api/owners/register`
+```json
+{
+	"name": "Nome",
+	"email": "email@exemplo.com",
+	"password": "senha1234",
+	"phone": "11999999999"
+}
+```
+
+### Login de Proprietário
+`POST /api/owners/login`
+```json
+{
+	"email": "email@exemplo.com",
+	"password": "senha1234"
+}
+```
+Resposta:
+```json
+{
+	"token": "<jwt_token>"
+}
+```
+
+### Cadastro de Imóvel
+`POST /api/properties` (protegido)
+```json
+{
+	"title": "Apartamento Central",
+	"description": "Ótimo apto mobiliado",
+	"address": "Rua X, 123",
+	"city": "São Paulo",
+	"price": 200,
+	"type": "apartamento"
+}
+```
+
+### Listar Imóveis Disponíveis
+`GET /api/properties/available?city=São Paulo&minPrice=100&maxPrice=300&type=apartamento`
 
 
-🔐 User Story 2 — Login de Proprietário
+## Documentação Swagger
+Acesse a documentação interativa em: [`/api/docs`](http://localhost:3000/api/docs)
 
-Como um proprietário registrado,
-Eu quero fazer login no sistema,
-Para que eu possa acessar minha conta e gerenciar meus imóveis cadastrados.
+## Testes Automatizados
 
-Regras de Negócio:
+Os testes de API REST estão implementados usando Mocha, Chai, Supertest e Mochawesome.
 
-O login deve validar o e-mail e a senha informados.
+### Estrutura dos testes
+- Os testes estão na pasta `test/`, organizados por funcionalidade (`owner`, `property`, etc).
+- Dados de teste (fixtures) estão em `test/fixtures/`.
+- Helpers reutilizáveis estão em `test/helpers/`.
+- O arquivo `.env` permite configurar a URL base da API (`BASE_URL`).
 
-Apenas proprietários com cadastro ativo podem acessar o sistema.
+### Executando os testes
 
-Após o login bem-sucedido, o sistema deve gerar um token de autenticação (ex.: JWT) para acesso às rotas protegidas.
+1. Instale as dependências:
+	```bash
+	npm install
+	```
+2. Execute todos os testes:
+	```bash
+	npm test
+	```
+3. Execute os testes com geração de relatório HTML:
+	```bash
+	npm run test:report
+	```
+	O relatório será gerado na pasta `mochawesome-report/`.
 
-O token de autenticação deve ter tempo de expiração configurado (por exemplo, 2 horas).
+### Observações
+- Os testes usam Data Driven Testing com arquivos JSON em `test/fixtures`.
+- O helper `test/helpers/token.js` facilita a obtenção de token JWT para rotas protegidas.
+- Os testes cobrem todos os cenários descritos em `CondicoesDeTeste.txt`.
 
-🏘️ User Story 3 — Registro de Imóveis
+## User Stories e Regras de Negócio
 
-Como um proprietário autenticado,
-Eu quero registrar meus imóveis,
-Para que eles fiquem disponíveis para locação por temporada no sistema.
+### 1. Registro de Proprietário
+- E-mail único
+- Campos obrigatórios: nome, e-mail, senha (mín. 8 caracteres), telefone
 
-Regras de Negócio:
+### 2. Login de Proprietário
+- Validação de e-mail/senha
+- Apenas proprietários ativos
+- Geração de token JWT (expira em 2h)
 
-Somente proprietários autenticados podem cadastrar imóveis.
+### 3. Registro de Imóveis
+- Apenas autenticados
+- Imóvel vinculado a um proprietário
+- Campos obrigatórios: título, descrição, endereço, cidade, valor da diária
+- Não pode haver dois imóveis do mesmo proprietário com o mesmo endereço
 
-Cada imóvel deve estar vinculado a um único proprietário.
-
-É obrigatório informar título, descrição, endereço, cidade, valor da diária e status de disponibilidade.
-
-Um mesmo proprietário não pode cadastrar dois imóveis com o mesmo endereço.
-
-🏠 User Story 4 — Lista de Apartamentos Disponíveis
-
-Como um proprietários,
-Eu quero visualizar a lista de apartamentos disponíveis,
-Para que eu possa conhecer todos os apartamentos disponiveis.
-
-Regras de Negócio:
-
-Apenas imóveis com status “disponível” devem ser exibidos.
-
-Deve ser possível filtrar os resultados por cidade, faixa de preço e tipo de imóvel.
+### 4. Lista de Apartamentos Disponíveis
+- Apenas status "disponível"
+- Filtros: cidade, faixa de preço, tipo
 

@@ -1,0 +1,119 @@
+ID
+Condição
+Resultado Esperado
+Camada
+1
+Tentar fazer um registro com usuário que não foi previamente registrado, preencher campos obrigatórios e senha que atende aos requisitos 
+Sucesso no registro
+API
+2
+Tenta fazer um registro com usuário que já foi registrado previamente
+falha por duplicidade
+API
+3
+Tentar registrar sem informar dados obrigatórios 
+Falha por ausência de campos obrigatórios
+API
+4
+Tentar registar com senha fora dos requisitos
+Falha por não atender aos requisitos de senha
+API
+5
+Tentar registrar com e-mail em formato inválido
+Falha por formato de e-mail inválido
+API
+
+
+JIRA-9167: Login de Proprietário
+
+ID
+Condição
+Resultado Esperado
+Camada
+1
+Fazer login com usuário que já foi registrado
+Sucesso no registro
+API
+2
+Tentar fazer login com usuário que não foi registrado antes
+Falha por usuário não registrado
+API
+3
+Tentar fazer login sem informar os dados obrigatório
+Falha por ausência de campos obrigatórios
+API
+4
+Tentar fazer login com senha inválida
+Falha senha incorreta
+Web
+5
+Uso do token para acessar rota protegida
+Acesso permitido enquanto token válido; negado quando expirado ou inválido
+API
+
+
+JIRA-9169: Registro de Imóveis
+
+ID
+Condição
+Resultado Esperado
+Camada
+1
+Cadastrar imóvel fornecendo todos os campos obrigatórios com proprietário autenticado
+Sucesso no cadastro; imóvel associado ao proprietário
+API
+2
+Tentar cadastrar imóvel sem autenticação
+Falha por autorização (somente proprietários autenticados podem cadastrar)
+API
+3
+Tentar cadastrar imóvel sem preencher campos obrigatórios (título, endereço, cidade, valor, disponibilidade)
+Falha por ausência de campos obrigatórios
+API
+4
+Tentar cadastrar dois imóveis com o mesmo endereço para o mesmo proprietário
+Falha por duplicidade de endereço para o mesmo proprietário
+API
+5
+Tentar cadastrar imóvel com valor de diária inválido (negativo ou formato incorreto)
+Falha por valor inválido
+API
+6
+entar cadastrar imóvel com campos fora do padrão (ex.: título muito longo, caracteres inválidos)
+
+
+Falha por validação de entrada; normalização / truncamento conforme regra
+API
+7
+Verificar que status de disponibilidade aceita os valores esperados (ex.: disponível / indisponível)
+Status persistido e refletido nas consultas
+API
+
+
+JIRA-9170: Lista de Apartamentos Disponíveis
+
+ID
+Condição
+Resultado Esperado
+Camada
+1
+Solicitar listagem geral de imóveis
+Retorna apenas imóveis com status “disponível”
+API
+2
+Aplicar filtros genéricos (usando 1 campo)
+Resultados filtrados conforme filtros combinados; operam corretamente
+API
+3
+Buscar sem filtros (retorno paginado)
+Retorno paginado com total/meta; evita overload de dados
+API
+4
+Combinar filtros (ex.: combinando campos)
+Resultados corretos correspondentes à combinação de filtros
+API
+5
+Verificar comportamento quando não há imóveis disponíveis
+Retorna lista vazia com status 200 e mensagem apropriada
+API
+

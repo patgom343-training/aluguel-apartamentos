@@ -1,0 +1,25 @@
+{
+  "name": "aluguel-apartamentos",
+  "version": "1.0.0",
+  "description": "API para gestão de apartamentos por temporada com autenticação JWT e documentação Swagger.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "mocha --recursive --timeout 10000",
+    "test:report": "mocha --recursive --timeout 10000 --reporter mochawesome"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "swagger-ui-express": "^5.0.1",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "mocha": "^10.2.0",
+    "chai": "^4.3.7",
+    "supertest": "^6.3.3",
+    "mochawesome": "^7.1.3",
+    "dotenv": "^16.3.1"
+  }
+}

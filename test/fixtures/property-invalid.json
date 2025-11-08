@@ -1,0 +1,5 @@
+[
+  { "title": "", "description": "", "address": "", "city": "", "price": null, "type": "", "available": true },
+  { "title": "Apt com valor negativo", "description": "Teste", "address": "Rua Teste, 1", "city": "Teste", "price": -100, "type": "apartamento", "available": true },
+  { "title": "Apt com valor texto", "description": "Teste", "address": "Rua Teste, 2", "city": "Teste", "price": "abc", "type": "apartamento", "available": true }
+]

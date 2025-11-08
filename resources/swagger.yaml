@@ -1,0 +1,249 @@
+
+openapi: 3.0.0
+info:
+  title: API de Gestão de Apartamentos por Temporada
+  version: 1.0.0
+  description: API para cadastro, autenticação de proprietários e gestão de imóveis para aluguel por temporada.
+servers:
+  - url: http://localhost:3000/api
+paths:
+  /owners/register:
+    post:
+      summary: Registro de proprietário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, email, password, phone]
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                phone:
+                  type: string
+      responses:
+        '201':
+          description: Proprietário registrado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  email:
+                    type: string
+                  phone:
+                    type: string
+        '400':
+          description: Dados inválidos
+        '409':
+          description: E-mail já cadastrado
+  /owners/login:
+    post:
+      summary: Login de proprietário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Login realizado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '401':
+          description: Credenciais inválidas
+  /properties:
+    post:
+      summary: Cadastro de imóvel
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title, description, address, city, price]
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                address:
+                  type: string
+                city:
+                  type: string
+                price:
+                  type: number
+                type:
+                  type: string
+                available:
+                  type: boolean
+      responses:
+        '201':
+          description: Imóvel cadastrado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Property'
+        '400':
+          description: Dados inválidos
+        '409':
+          description: Imóvel já cadastrado neste endereço para este proprietário
+        '401':
+          description: Token inválido ou expirado
+  /properties/{id}/available:
+    put:
+      summary: Atualizar disponibilidade do imóvel
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [available]
+              properties:
+                available:
+                  type: boolean
+      responses:
+        '200':
+          description: Disponibilidade atualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Property'
+        '404':
+          description: Imóvel não encontrado
+        '401':
+          description: Token inválido ou expirado
+  /properties/{id}:
+    put:
+      summary: Atualizar todos os dados do imóvel
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                address:
+                  type: string
+                city:
+                  type: string
+                price:
+                  type: number
+                type:
+                  type: string
+                available:
+                  type: boolean
+      responses:
+        '200':
+          description: Imóvel atualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Property'
+        '404':
+          description: Imóvel não encontrado
+        '409':
+          description: Imóvel já cadastrado neste endereço para este proprietário
+        '401':
+          description: Token inválido ou expirado
+  /properties/available:
+    get:
+      summary: Lista de imóveis disponíveis
+      parameters:
+        - in: query
+          name: city
+          schema:
+            type: string
+        - in: query
+          name: minPrice
+          schema:
+            type: number
+        - in: query
+          name: maxPrice
+          schema:
+            type: number
+        - in: query
+          name: type
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lista de imóveis disponíveis
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Property'
+components:
+  schemas:
+    Property:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        price:
+          type: number
+        type:
+          type: string
+        available:
+          type: boolean
+        ownerId:
+          type: integer
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

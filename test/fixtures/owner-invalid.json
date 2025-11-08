@@ -1,0 +1,5 @@
+[
+  { "name": "", "email": "", "password": "", "phone": "" },
+  { "name": "Teste", "email": "emailinvalido", "password": "senha1234", "phone": "11999999999" },
+  { "name": "Teste", "email": "teste@email.com", "password": "123", "phone": "11999999999" }
+]
