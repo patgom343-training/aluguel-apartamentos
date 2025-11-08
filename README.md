@@ -10,9 +10,8 @@ O e-mail do proprietário deve ser único (não pode haver duplicidade).
 
 Todos os campos obrigatórios (nome, e-mail, senha, telefone) devem ser preenchidos.
 
-A senha deve atender a critérios mínimos de segurança (mínimo de 8 caracteres, incluindo letras e números).
+A senha deve atender a critérios mínimos de segurança (mínimo de 8 caracteres).
 
-O registro só é permitido se todos os dados forem válidos e consistentes.
 
 🔐 User Story 2 — Login de Proprietário
 
@@ -48,9 +47,9 @@ Um mesmo proprietário não pode cadastrar dois imóveis com o mesmo endereço.
 
 🏠 User Story 4 — Lista de Apartamentos Disponíveis
 
-Como um usuário visitante ou inquilino,
+Como um proprietários,
 Eu quero visualizar a lista de apartamentos disponíveis,
-Para que eu possa conhecer as opções de locação por temporada.
+Para que eu possa conhecer todos os apartamentos disponiveis.
 
 Regras de Negócio:
 
@@ -58,18 +57,3 @@ Apenas imóveis com status “disponível” devem ser exibidos.
 
 Deve ser possível filtrar os resultados por cidade, faixa de preço e tipo de imóvel.
 
-O sistema deve exibir apenas informações públicas (sem mostrar dados pessoais do proprietário).
-
-📞 User Story 5 — Dados de Contato com o Proprietário
-
-Como um usuário autenticado,
-Eu quero visualizar os dados de contato do proprietário de um imóvel,
-Para que eu possa entrar em contato e negociar a locação.
-
-Regras de Negócio:
-
-Somente usuários autenticados podem visualizar dados de contato do proprietário.
-
-O sistema deve exibir apenas e-mail e telefone cadastrados.
-
-Deve haver controle de acesso para evitar exibição indevida de dados pessoais.
