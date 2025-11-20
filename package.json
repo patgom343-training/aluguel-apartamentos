@@ -5,7 +5,8 @@
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
-    "test": "mocha --recursive --timeout 10000",
+    "test": "mocha --recursive --timeout 10000 --ignore 'test/k6/**/*.js'",
+    "test:k6": "k6 run test/k6/register/register_user_success.k6.js",
     "test:report": "mocha --recursive --timeout 10000 --reporter mochawesome"
   },
   "dependencies": {
